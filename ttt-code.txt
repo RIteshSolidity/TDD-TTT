@@ -1,0 +1,99 @@
+using System;
+
+namespace tictacteo
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Hello World!");
+        }
+    }
+
+    public class Tictacteo
+    {
+        private char[,] board = new char[3, 3] {
+            { 'q', 'q','q'},
+            { 'q','q','q'} ,
+            { 'q','q','q'}
+        };
+
+        private char player = 'w';
+
+        public string play(int x, int y) {
+            CheckAxis(x);
+            CheckAxis(y);
+            player = nextPlayer();
+            SetBoard(x, y, player);
+
+            if (determineWinner())
+            {
+                return player + " is Winner";
+            }
+            else if (determineDraw()) {
+                return "Its a draw";
+            }
+            else
+            {
+                return "No Winner";
+            }
+           
+
+            
+            
+        }
+
+        public void CheckAxis(int axis) {
+            if (axis < 1 || axis > 3)
+                throw new InvalidOperationException("axis should be between 1 and 3");
+        }
+
+        public void SetBoard(int x, int y, char player) {
+            if (board[x - 1, y - 1] != 'q')
+                throw new InvalidOperationException("This cell is already occupied");
+            board[x - 1, y - 1] = player;
+        }
+
+        public char nextPlayer()
+        {
+            if (player == 'X')
+                return 'O';
+            return 'X';
+
+        }
+
+        public bool determineWinner() {
+            for (int i = 0; i < 3; i++)
+            {
+                if ((board[i, 0] == player) && (board[i, 1] == player) && (board[i, 2] == player))
+                {
+                    return true;  //(player + " is Winner");
+                }
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                if ((board[0, i] == player) && (board[1, i] == player) && (board[2, i] == player))
+                {
+                    return true; // (player + " is Winner");
+                }
+            }
+
+            if ((board[0, 0] == player) && (board[1, 1] == player) && (board[2, 2] == player))
+            {
+                return true; // (player + " is Winner");
+            }
+
+            if ((board[0, 2] == player) && (board[1, 1] == player) && (board[2, 0] == player))
+            {
+                return true; // (player + " is Winner");
+            }
+            return false;
+        }
+
+        public bool determineDraw() {
+            return false;
+        }
+
+    }
+}
