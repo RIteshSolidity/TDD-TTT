@@ -1,0 +1,111 @@
+using System;
+using Xunit;
+using tictacteo;
+
+namespace Tictacteotests
+{
+    public class UnitTest1
+    {
+        [Fact]
+        public void tictacteo_moveoutofboundsX_exception()
+        {
+            Tictacteo ttt = new Tictacteo();
+            Assert.Throws<InvalidOperationException>( () => ttt.play(5, 2));
+        }
+
+        [Fact]
+        public void tictacteo_moveoutofboundsY_exception()
+        {
+            Tictacteo ttt = new Tictacteo();
+            Assert.Throws<InvalidOperationException>(() => ttt.play(2, 5));
+        }
+
+        [Fact]
+        public void tictacteo_MoveonExistingCell_exception()
+        {
+            Tictacteo ttt = new Tictacteo();
+            ttt.play(2, 2);
+            Assert.Throws<InvalidOperationException>(() => ttt.play(2, 2));
+        }
+
+        [Fact]
+        public void tictacteo_THeFirstPlayerisX_Success()
+        {
+            Tictacteo ttt = new Tictacteo();            
+            Assert.Equal('X', ttt.nextPlayer());
+        }
+
+        [Fact]
+        public void tictacteo_THeSecondPlayerisO_Success()
+        {
+            Tictacteo ttt = new Tictacteo();
+            ttt.play(1,1);
+            Assert.Equal('O', ttt.nextPlayer());
+        }
+
+        [Fact]
+        public void tictacteo_THeMultiPlayerisO_Success()
+        {
+            Tictacteo ttt = new Tictacteo();
+            ttt.play(1, 1); // X
+            ttt.play(1, 2); //O
+            ttt.play(3, 3); //X            
+            Assert.Equal('O', ttt.nextPlayer());
+        }
+
+        [Fact]
+        public void tictacteo_GeWinnerTwoMoves_Success()
+        {
+            Tictacteo ttt = new Tictacteo();
+            ttt.play(1, 1); // X          
+            Assert.Equal("No Winner", ttt.play(1, 2));
+        }
+
+        [Fact]
+        public void tictacteo_GetWinnerX_Success()
+        {
+            Tictacteo ttt = new Tictacteo();
+            ttt.play(1, 1); // X    
+            ttt.play(2, 3); // X
+            ttt.play(1, 2); // X
+            ttt.play(3, 1); // X
+
+            Assert.Equal("X is Winner", ttt.play(1, 3));
+        }
+
+        [Fact]
+        public void tictacteo_GetWinnerO_Success()
+        {
+            Tictacteo ttt = new Tictacteo();
+            ttt.play(2, 3); // X
+            ttt.play(1, 1); // O    
+            ttt.play(3, 1); // X
+            ttt.play(1, 2); // O
+            ttt.play(3, 2); // X
+
+            Assert.Equal("O is Winner", ttt.play(1, 3));
+        }
+
+        [Fact]
+        public void tictacteo_GetDiagonalOneWinner_Success()
+        {
+            Tictacteo ttt = new Tictacteo();
+            ttt.play(1,1); // X
+            ttt.play(1, 3); // O    
+            ttt.play(2,2); // X
+            ttt.play(1, 2); // O
+            Assert.Equal("X is Winner", ttt.play(3, 3));
+        }
+
+        [Fact]
+        public void tictacteo_GetDiagonalTwoWinner_Success()
+        {
+            Tictacteo ttt = new Tictacteo();
+            ttt.play(3, 1); // X
+            ttt.play(2, 3); // O    
+            ttt.play(2, 2); // X
+            ttt.play(1, 2); // O
+            Assert.Equal("X is Winner", ttt.play(1, 3));
+        }
+    }
+}
